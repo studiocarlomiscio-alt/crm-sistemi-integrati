@@ -1,0 +1,9 @@
+
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+model User { id String @id @default(uuid()) email String @unique name String? role String password String supplies Supply[] contracts Contract[] }
+model Supply { id String @id @default(uuid()) type String pod String? pdr String? address Json? meterSerial String? powerKw Float? active Boolean @default(true) customer User @relation(fields: [customerId], references: [id]) customerId String contracts Contract[] readings Reading[] }
+model Contract { id String @id @default(uuid()) contractNumber String @unique startDate DateTime? endDate DateTime? status String @default("pending") supply Supply @relation(fields: [supplyId], references: [id]) supplyId String bills Bill[] }
+model Reading { id String @id @default(uuid()) readingDate DateTime value Float source String supply Supply @relation(fields: [supplyId], references: [id]) supplyId String }
+model Tariff { id String @id @default(uuid()) name String type String effectiveFrom DateTime effectiveTo DateTime? components Json? createdBy String? }
+model Bill { id String @id @default(uuid()) contractId String contract Contract @relation(fields: [contractId], references: [id]) periodFrom DateTime periodTo DateTime consumption Float? amount Float currency String? @default("EUR") status String? @default("issued") dueDate DateTime? issuedAt DateTime? @default(now()) }

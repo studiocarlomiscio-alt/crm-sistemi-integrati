@@ -1,0 +1,1 @@
+Sistemi Integrati CRM Energia - segui le istruzioni nel file README fornito nella chat.
